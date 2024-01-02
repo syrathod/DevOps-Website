@@ -1,0 +1,53 @@
+.kube_page{
+    text-align:center;
+    padding: 20px;
+}
+
+.kube_points{
+    font-Size: 20px;
+    font-weight: 600;
+    position: absolute;
+    left: 500px;
+    align-items: center;
+    text-align: left;
+    list-style-position: inside;
+}
+
+.kube_img{
+    position:absolute;
+    top: 300px;
+    left: 10px;
+}
+
+.pages{
+    text-align:center;
+    padding: 36px;
+}
+
+
+.paragraph{
+    font-size: 20px;
+    font-weight: 600;
+    text-align: justify;
+    padding-inline: 24px;
+}
+.points{
+    font-Size: 20px;
+    font-weight: 600;
+    position: relative;
+    float:left;
+    align-items: center;
+    text-align: left;
+    list-style-position: inside;
+}
+
+.image{
+    padding:36px;
+    background-color: white;
+    height: 240px;
+    float: left;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
