@@ -1,0 +1,17 @@
+html{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-body-tertiary{
+    float: right;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    width: 400px;
+    border: 1px solid #11679B;
+    border-radius: 3%;
+}
