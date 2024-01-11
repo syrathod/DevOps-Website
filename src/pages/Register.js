@@ -1,50 +1,51 @@
 import React, { useState } from "react";
-import "./signin.css";
 import ieee from "../images/logo.jpg";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import "./signin.css";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import { auth } from "../contexts/Firebase";
 
-export default function Signin() {
-  const { currentUser } = useAuth();
+export default function Register() {
   const [emailAddr, setEmail] = useState(null);
   const [username, setUsername] = useState(null);
   const [pass, setPass] = useState(null);
+  const [ConfirmPass, setConfirmPass] = useState(null);
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleUsernameChange = (event) => {
+  const handleUsername = (event) => {
     setUsername(event.target.value);
   };
 
-  const handlePassChange = (event) => {
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePass = (event) => {
     setPass(event.target.value);
   };
 
-  const onClickSignIn = (event) => {
+  const handleConfirmPass = (event) => {
+    setConfirmPass(event.target.value);
+  };
+
+  const navigate = useNavigate();
+  const rerouteToSignInPage = () => {
+    navigate("/signin");
+  };
+
+  const handleClick = (event) => {
     event.preventDefault();
-    signInWithEmailAndPassword(auth, emailAddr, pass)
+    const email = createUserWithEmailAndPassword(auth, emailAddr, ConfirmPass)
       .then((userCredential) => {
+        // Signed up
         const user = userCredential.user;
-        // unsubscribe(user);
-        rerouteToHomePage();
+        rerouteToSignInPage();
+        // alert(`Registered succesfully, Email: ${emailAddr}, ${pass}`);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        // alert(`${errorCode}, ${errorMessage}`);
       });
-  };
-
-  //OnClickRegister
-  const navigate = useNavigate();
-  const rerouteToRegisterPage = () => {
-    navigate("/register");
-  };
-  const rerouteToHomePage = () => {
-    navigate("/");
   };
 
   return (
@@ -67,18 +68,37 @@ export default function Signin() {
         <main class="form-signin w-100 m-auto">
           <form>
             <img class="mb-4" src={ieee} alt="" width="220" height="130" />
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-            {currentUser && currentUser.email}
+            <h1 class="h3 mb-3 fw-normal">Register an account</h1>
             <div class="form-floating">
               <input
-                type="email"
                 class="form-control"
                 id="floatingInput"
                 placeholder="name@example.com"
                 style={{ marginBottom: "5px" }}
-                onChange={handleEmailChange}
+                onChange={handleUsername}
               />
-              <label for="floatingInput">Email address</label>
+              <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+                style={{ marginBottom: "5px" }}
+                onChange={handleEmail}
+              />
+              <label for="floatingInput">Email</label>
+            </div>
+            <div class="form-floating">
+              <input
+                type="password"
+                class="form-control"
+                id="floatingPassword"
+                placeholder="Password"
+                style={{ marginBottom: "5px" }}
+                onChange={handlePass}
+              />
+              <label for="floatingInput">Password</label>
             </div>
             <div class="form-floating">
               <input
@@ -87,24 +107,15 @@ export default function Signin() {
                 id="floatingPassword"
                 placeholder="Password"
                 style={{ marginBottom: "15px" }}
-                onChange={handlePassChange}
+                onChange={handleConfirmPass}
               />
-              <label for="floatingPassword">Password</label>
+              <label for="floatingPassword">Confirm Password</label>
             </div>
             <button
               class="btn btn-primary w-100 py-2"
               type="submit"
-              style={{ marginBottom: "15px" }}
-              onClick={onClickSignIn}
-            >
-              Sign in
-            </button>
-            Don't have an account?
-            <button
-              class="btn btn-secondary w-100 py-2"
-              type="submit"
-              onClick={rerouteToRegisterPage}
               style={{ marginTop: "5px", paddingBottom: "15px" }}
+              onClick={handleClick}
             >
               Register
             </button>
