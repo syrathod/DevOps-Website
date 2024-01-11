@@ -1,18 +1,34 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { auth } from "../contexts/Firebase";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 
 function NavBar() {
+  const { currentUser } = useAuth();
+
+  const navigate = useNavigate();
+  const rerouteToSignInPage = () => {
+    navigate("/signin");
+  };
+
+  const handleLogin = () => {
+    rerouteToSignInPage();
+  };
+
+  const handleLogout = () => {
+    auth.signOut();
+  };
+
   const location = useLocation();
   return (
     <>
       <Navbar bg="dark" variant="dark" className="navbar">
         <Container>
           <Navbar.Brand>
-            {" "}
             <Link to="/">IEEE DevOps</Link>
           </Navbar.Brand>
           <Nav className="me-auto">
@@ -54,18 +70,18 @@ function NavBar() {
                 GCP
               </Link>
             </Nav.Link>
-            <Nav.Link className="btnlink">
-              <Link
-                to="/signin"
-                className={
-                  location.pathname === "/signin" ? "activeNavLink" : ""
-                }
-              >
-                <button type="button" class="btn btn-success">
-                  Sign In
-                </button>
-              </Link>
-            </Nav.Link>
+            <button
+              type="button"
+              class="btn btn-success"
+              style={{
+                marginLeft: "40px",
+                paddingLeft: "15px",
+                paddingRight: "15px",
+              }}
+              onClick={currentUser ? handleLogout : handleLogin}
+            >
+              {currentUser ? "Log Out" : "Sign In"}
+            </button>
           </Nav>
         </Container>
       </Navbar>
