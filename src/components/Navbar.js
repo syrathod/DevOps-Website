@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -11,15 +12,33 @@ import "./Navbar.css";
 
 function NavBar() {
   const { currentUser } = useAuth();
+  const [userInfo, setUserInfo] = useState(null);
 
   const db = getFirestore(myapp);
 
-  async function getUserInfo() {
-    const docRef = doc(db, "users", { currentUser }); // ~
-    const docSnap = await getDoc(docRef);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const docRef = doc(db, "users", currentUser.email);
+        const docSnap = await getDoc(docRef);
+        setUserInfo(docSnap.data().username);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
 
-    return docSnap.data();
-  }
+    if (currentUser) {
+      fetchUserInfo();
+    }
+  }, [currentUser, db]);
+
+  // async function getUserInfo() {
+  //   const docRef = doc(db, "users", currentUser.email); // ~
+  //   const docSnap = await getDoc(docRef);
+  //   // return "Hi";
+  //   console.log(String(docSnap.data().username));
+  //   return "Hi";
+  // }
 
   const navigate = useNavigate();
   const rerouteToSignInPage = () => {
@@ -94,9 +113,15 @@ function NavBar() {
               {currentUser ? "Log Out" : "Sign In"}
             </button>
           </Nav>
-          <p style={{ color: "white", marginTop: "10px" }}>
-            {/* {currentUser && getUserInfo()}  */}
-          </p>
+          {currentUser && (
+            <p style={{ color: "white", marginTop: "13px", fontSize: "17px" }}>
+              Hello
+              <span style={{ color: "#0f9048", fontWeight: "bold" }}>
+                {" "}
+                @{userInfo}
+              </span>
+            </p>
+          )}
         </Container>
       </Navbar>
       <br />

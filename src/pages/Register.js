@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { auth, myapp } from "../contexts/Firebase";
 import { Alert } from "react-bootstrap";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, setDoc, doc } from "firebase/firestore";
 
 export default function Register() {
   const db = getFirestore(myapp);
@@ -49,9 +49,9 @@ export default function Register() {
       try {
         setError("");
         await createUserWithEmailAndPassword(auth, emailAddr, confirmPass);
-        await addDoc(collection(db, "users"), {
-          username: { username },
-          email: { emailAddr },
+        await setDoc(doc(db, "users", emailAddr), {
+          username: username,
+          email: emailAddr,
         }).then(() => {
           rerouteToHomePage();
         });
