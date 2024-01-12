@@ -3,12 +3,23 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { auth } from "../contexts/Firebase";
+import { auth, myapp } from "../contexts/Firebase";
+import { getFirestore } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 
 function NavBar() {
   const { currentUser } = useAuth();
+
+  const db = getFirestore(myapp);
+
+  async function getUserInfo() {
+    const docRef = doc(db, "users", { currentUser }); // ~
+    const docSnap = await getDoc(docRef);
+
+    return docSnap.data();
+  }
 
   const navigate = useNavigate();
   const rerouteToSignInPage = () => {
@@ -83,6 +94,9 @@ function NavBar() {
               {currentUser ? "Log Out" : "Sign In"}
             </button>
           </Nav>
+          <p style={{ color: "white", marginTop: "10px" }}>
+            {/* {currentUser && getUserInfo()}  */}
+          </p>
         </Container>
       </Navbar>
       <br />

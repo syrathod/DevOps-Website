@@ -13,4 +13,4 @@ const app = initializeApp({
 });
 
 export const auth = getAuth();
-export default app;
+export const myapp = app;

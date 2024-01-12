@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import ieee from "../images/logo.jpg";
 import "./signin.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../contexts/Firebase";
+import { auth, myapp } from "../contexts/Firebase";
 import { Alert } from "react-bootstrap";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function Register() {
+  const db = getFirestore(myapp);
+
   const [emailAddr, setEmail] = useState(null);
   const [username, setUsername] = useState(null);
   const [pass, setPass] = useState(null);
@@ -44,11 +48,13 @@ export default function Register() {
     if (pass === confirmPass) {
       try {
         setError("");
-        await createUserWithEmailAndPassword(auth, emailAddr, confirmPass).then(
-          () => {
-            rerouteToHomePage();
-          }
-        );
+        await createUserWithEmailAndPassword(auth, emailAddr, confirmPass);
+        await addDoc(collection(db, "users"), {
+          username: { username },
+          email: { emailAddr },
+        }).then(() => {
+          rerouteToHomePage();
+        });
       } catch {
         setError("Something went wrong.");
       }
