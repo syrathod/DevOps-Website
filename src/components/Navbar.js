@@ -16,30 +16,6 @@ function NavBar() {
 
   const db = getFirestore(myapp);
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const docRef = doc(db, "users", currentUser.email);
-        const docSnap = await getDoc(docRef);
-        setUserInfo(docSnap.data().username);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-
-    if (currentUser) {
-      fetchUserInfo();
-    }
-  }, [currentUser, db]);
-
-  // async function getUserInfo() {
-  //   const docRef = doc(db, "users", currentUser.email); // ~
-  //   const docSnap = await getDoc(docRef);
-  //   // return "Hi";
-  //   console.log(String(docSnap.data().username));
-  //   return "Hi";
-  // }
-
   const navigate = useNavigate();
   const rerouteToSignInPage = () => {
     navigate("/signin");

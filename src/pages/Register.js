@@ -42,27 +42,6 @@ export default function Register() {
     navigate("/");
   };
 
-  async function handleRegister(event) {
-    event.preventDefault();
-
-    if (pass === confirmPass) {
-      try {
-        setError("");
-        await createUserWithEmailAndPassword(auth, emailAddr, confirmPass);
-        await setDoc(doc(db, "users", emailAddr), {
-          username: username,
-          email: emailAddr,
-        }).then(() => {
-          rerouteToHomePage();
-        });
-      } catch {
-        setError("Something went wrong.");
-      }
-    } else {
-      setError("Passwords do not match.");
-    }
-  }
-
   return (
     <body class="d-flex align-items-center py-6 bg-body-tertiary">
       <div className="maindiv">

@@ -25,19 +25,6 @@ export default function Signin() {
     setPass(event.target.value);
   };
 
-  const handleSignIn = (event) => {
-    event.preventDefault();
-    signInWithEmailAndPassword(auth, emailAddr, pass)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        rerouteToHomePage();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  };
-
   //OnClickRegister
   const navigate = useNavigate();
   const rerouteToRegisterPage = () => {
